@@ -1,0 +1,15 @@
+import express from "express";
+import { authorize, protect } from "../middleware/auth.js";
+import { captureOrderPayment, createOrder, getOrder, getOrders, refundOrderPayment, updateOrderPaymentStatus, updateOrderStatus } from "../controllers/orderController.js";
+
+const router = express.Router();
+
+router.get("/", protect, getOrders);
+router.get("/:id", protect, getOrder);
+router.post("/", protect, createOrder);
+router.patch("/:id/status", protect, authorize("admin"), updateOrderStatus);
+router.patch("/:id/payment", protect, authorize("admin"), updateOrderPaymentStatus);
+router.patch("/:id/capture", protect, authorize("admin"), captureOrderPayment);
+router.patch("/:id/refund", protect, authorize("admin"), refundOrderPayment);
+
+export default router;
